@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
 interface FeedbackAnimationProps {
@@ -10,29 +10,23 @@ interface FeedbackAnimationProps {
 const FeedbackAnimation: React.FC<FeedbackAnimationProps> = ({
   isCorrect,
   isVisible,
-  duration = 1000,
 }) => {
-  const [shouldRender, setShouldRender] = useState(isVisible);
-
+  const [animationStatus, setAnimationStatus] = useState("hidden");
   useEffect(() => {
-    if (isVisible) {
-      setShouldRender(true);
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-      }, duration);
-      return () => clearTimeout(timer);
+    if (isVisible && animationStatus === "hidden") {
+      setAnimationStatus("animate-slide-in");
+    } else if (!isVisible && animationStatus !== "hidden") {
+      setAnimationStatus("animate-fade-out");
+      setTimeout(() => {
+        setAnimationStatus("hidden");
+      }, 1000);
     }
-    return undefined;
-  }, [isVisible, duration]);
-
-  if (!shouldRender) return null;
+  }, [isVisible]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
       <div
-        className={`${
-          isVisible ? "animate-slide-in" : "animate-fade-out"
-        } flex items-center justify-center ${
+        className={`${animationStatus} flex items-center justify-center ${
           isCorrect ? "bg-green-500" : "bg-red-500"
         } text-white p-6 rounded-full shadow-xl`}
       >

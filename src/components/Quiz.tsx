@@ -64,7 +64,7 @@ export default function Quiz() {
 
     setTimeout(() => {
       setShowFeedback(false);
-    }, 1500);
+    }, 2000);
   }, [currentQuestionIndex, questions, selectedAnswer, submitAnswer]);
 
   const handleNext = () => {
@@ -132,7 +132,6 @@ export default function Quiz() {
         />
 
         <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-
           <div className="space-y-3 md:grid md:grid-cols-2 md:gap-4">
             {currentQuestion.all_answers?.map((answer, index) => (
               <AnswerOption
@@ -150,6 +149,7 @@ export default function Quiz() {
         </div>
 
         <FeedbackAnimation
+          key={currentQuestionIndex}
           isCorrect={feedbackCorrect}
           isVisible={showFeedback}
         />
